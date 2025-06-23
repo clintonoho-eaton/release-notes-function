@@ -46,22 +46,21 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         The release note should summarize deployment purpose, changes, or improvements, even if some fields are missing.
         """
 
-        # Step 5: Make OpenAI request
-        try:
-            response = client.chat.completions.create(
-                model=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant that summarizes release changes."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.5,
-                max_tokens=300
-            )
-            ai_output = response.choices[0].message.content.strip()
-            logging.info(f"✅ AI Output: {ai_output}")
-        except Exception as e:
-            logging.error(f"❌ OpenAI API error: {e}")
-            return func.HttpResponse(f"OpenAI API call failed: {e}", status_code=500)
+     # Step 5: Call the AI
+    try:
+        logging.info("Calling OpenAI for release notes...")
+        response = client.chat.completions.create(
+            model=AZURE_OPENAI_DEPLOYMENT,
+            messages=[
+                {"role": "system", "content": "You are an AI assistant helping write professional software release notes."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        ai_response = response.choices[0].message.content.strip()
+        logging.info(f"AI Response: {ai_response}")
+    except Exception as e:
+        logging.error(f"❌ OpenAI call failed: {e}")
+        return func.HttpResponse(f"OpenAI error: {e}", status_code=500)
 
         # Step 6: Return success response
         return func.HttpResponse(
