@@ -46,21 +46,33 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         The release note should summarize deployment purpose, changes, or improvements, even if some fields are missing.
         """
 
-     # Step 5: Call the AI
+     # Step 5: Call the AI with explicit debug logging
     try:
-        logging.info("Calling OpenAI for release notes...")
+        logging.info("Step 5: Calling Azure OpenAI...")
+
         response = client.chat.completions.create(
             model=AZURE_OPENAI_DEPLOYMENT,
             messages=[
-                {"role": "system", "content": "You are an AI assistant helping write professional software release notes."},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": "You are an AI assistant helping write professional software release notes."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
             ]
         )
+
         ai_response = response.choices[0].message.content.strip()
-        logging.info(f"AI Response: {ai_response}")
+        logging.info(f"Step 5: AI response received: {ai_response}")
+
     except Exception as e:
-        logging.error(f"❌ OpenAI call failed: {e}")
-        return func.HttpResponse(f"OpenAI error: {e}", status_code=500)
+        import traceback
+        error_details = traceback.format_exc()
+        logging.error(f"❌ Exception during OpenAI call:\n{error_details}")
+        return func.HttpResponse(f"OpenAI call failed:\n{error_details}", status_code=500)
+
 
         # Step 6: Return success response
         return func.HttpResponse(
