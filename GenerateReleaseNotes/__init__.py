@@ -1,86 +1,79 @@
 import logging
-import azure.functions as func
-import json
 import os
+import azure.functions as func
+from azure.identity import DefaultAzureCredential
 from openai import AzureOpenAI
+import json
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('📥 Function triggered.')
+    logging.info("⚙️ Azure Function triggered")
 
     try:
-        # Step 1: Try parsing the body
-        try:
-            req_body = req.get_json()
-            logging.info(f"📦 Parsed request body: {req_body}")
-        except Exception as e:
-            logging.error(f"❌ Error parsing JSON: {e}")
-            return func.HttpResponse(f"Bad request: Invalid JSON. {e}", status_code=400)
+        payload = req.get_json()
+        logging.info(f"📦 Payload received: {json.dumps(payload)}")
+    except Exception as e:
+        logging.error(f"❌ Failed to parse JSON: {e}")
+        return func.HttpResponse(f"Invalid JSON: {e}", status_code=400)
 
-        # Step 2: Extract event name
-        event_name = req_body.get("event_name") or req_body.get("tag")
-        if not event_name:
-            logging.warning("⚠️ Missing 'event_name' or 'tag' in payload.")
-            event_name = "Unknown Event"
+    # Step 1: Extract fields from payload
+    release_name = payload.get("releaseName", "Unnamed Release")
+    summary = payload.get("summary", "No summary provided.")
+    commits = payload.get("commitMessages", [])
+    repo = payload.get("repository", "Unknown Repo")
+    tag = payload.get("tag", "No tag")
 
-        logging.info(f"📝 Event Name: {event_name}")
+    logging.info(f"📌 Extracted release info: {release_name}, {repo}, {tag}")
 
-        # Step 3: Set up OpenAI client
-        try:
-            client = AzureOpenAI(
-                api_key=os.getenv("AZURE_OPENAI_KEY"),
-                api_version="2024-12-01-preview",
-                azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
-            )
-            logging.info("✅ OpenAI client initialized.")
-        except Exception as e:
-            logging.error(f"❌ Failed to initialize AzureOpenAI client: {e}")
-            return func.HttpResponse(f"AzureOpenAI client error: {e}", status_code=500)
-
-        # Step 4: Build the prompt
-        prompt = f"""
-        You are an AI assistant helping generate a release note summary.
-        Based on the following deployment tag or event name, write a professional release note:
-
-        Event Name or Tag: {event_name}
-
-        The release note should summarize deployment purpose, changes, or improvements, even if some fields are missing.
-        """
-
-     # Step 5: Call the AI with explicit debug logging
+    # Step 2: Initialize Azure OpenAI Client
     try:
-        logging.info("Step 5: Calling Azure OpenAI...")
+        client = AzureOpenAI(
+            api_key=os.getenv("AZURE_OPENAI_KEY"),
+            api_version="2024-12-01-preview",
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
+        )
+        logging.info("✅ Azure OpenAI client initialized")
+    except Exception as e:
+        logging.error(f"❌ Failed to initialize OpenAI client: {e}")
+        return func.HttpResponse(f"OpenAI Client Error: {e}", status_code=500)
 
+    # Step 3: Format commits into readable text
+    try:
+        formatted_commits = "\n".join(f"- {msg}" for msg in commits)
+        logging.info("📝 Formatted commit messages")
+    except Exception as e:
+        logging.error(f"❌ Failed to format commits: {e}")
+        return func.HttpResponse(f"Commit formatting error: {e}", status_code=500)
+
+    # Step 4: Construct AI prompt
+    prompt = f"""
+You are an AI assistant that writes professional software release notes.
+
+Release: {release_name}
+Repository: {repo}
+Tag: {tag}
+Summary: {summary}
+
+The following changes were made:
+{formatted_commits}
+
+Please write clear and concise release notes in markdown format.
+"""
+    logging.info("📤 Prompt constructed successfully")
+
+    # Step 5: Call OpenAI
+    try:
         response = client.chat.completions.create(
-            model=AZURE_OPENAI_DEPLOYMENT,
+            model="gpt-4",
             messages=[
-                {
-                    "role": "system",
-                    "content": "You are an AI assistant helping write professional software release notes."
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
+                {"role": "system", "content": "You write professional software release notes."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
         )
-
-        ai_response = response.choices[0].message.content.strip()
-        logging.info(f"Step 5: AI response received: {ai_response}")
+        logging.info("✅ OpenAI response received")
+        ai_output = response.choices[0].message.content.strip()
+        return func.HttpResponse(ai_output, status_code=200, mimetype="text/plain")
 
     except Exception as e:
-        import traceback
-        error_details = traceback.format_exc()
-        logging.error(f"❌ Exception during OpenAI call:\n{error_details}")
-        return func.HttpResponse(f"OpenAI call failed:\n{error_details}", status_code=500)
-
-
-        # Step 6: Return success response
-        return func.HttpResponse(
-            json.dumps({"release_note": ai_output}),
-            status_code=200,
-            mimetype="application/json"
-        )
-
-    except Exception as e:
-        logging.error(f"❌ Unknown server error: {e}")
-        return func.HttpResponse(f"Server error: {e}", status_code=500)Get
+        logging.error(f"❌ OpenAI call failed: {e}")
+        return func.HttpResponse(f"OpenAI error: {e}", status_code=500)
