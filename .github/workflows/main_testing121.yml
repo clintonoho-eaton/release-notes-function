@@ -80,5 +80,5 @@ jobs:
         with:
           app-name: 'Testing121'
           slot-name: 'Production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          package: release.zip
           
