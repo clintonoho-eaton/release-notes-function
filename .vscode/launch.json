@@ -1,0 +1,97 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      "name": "Debug: Enhanced Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_enhanced.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    },
+    {
+      "name": "Debug: Functions Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_functions.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    },
+    {
+      "name": "Debug: Custom Config API Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_custom_config_api.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    },
+    {
+      "name": "Debug: AI Analysis Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_ai_analysis.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    },
+    {
+      "name": "Debug: JQL Debug Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_jql_debug.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    },
+    {
+      "name": "Debug: Environment Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_environment.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    },
+    {
+      "name": "Debug: Custom Debug Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_custom_debug.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "justMyCode": false,
+      "python": "${config:python.defaultInterpreterPath}"
+    }
+  ]
+}

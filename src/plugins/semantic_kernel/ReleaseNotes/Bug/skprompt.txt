@@ -1,0 +1,30 @@
+I have a Jira {{$issue_type}} in JSON format conforming to a provided schema, which includes keys, summary, description, and comments.
+I need you to analyze the {{$issue_type}} data:
+
+{{$issue_info}}
+
+CRITICAL: You MUST return ONLY a valid JSON object. Do not include any text before or after the JSON. Your response must start with '{' and end with '}'. If you cannot analyze the data, return a JSON object with default values rather than an empty response.
+
+The JSON must contain the following fields:
+
+{{$output_schema}}
+
+INSTRUCTIONS:
+- Extract the "ticket_number" from the summary field. It will be in the format of 'INCXXXXXXXXXXXX'. If no ticket number is found, set this field to an empty string "".
+- The "visibility" can be "Internal" or "External". Internal tickets reference developer and team processes or tools, external tickets reference customers or customer use cases.
+- The "executive_summary" should summarize the {{$issue_type}} in 1 sentence that a non-technical person could understand.
+- The "technical_summary" should summarize the {{$issue_type}} in 1 sentence that an expert technical person could understand.
+- The "cause" should be a concise summary of what you think the cause of the bug was.
+- The "fix" should be a concise summary of what you think the fix for the bug was.
+- The "reasoning" should articulate your reasoning for the "cause" and "fix" fields.
+
+Use your discretion to reason the best you can in the presence of ambiguous or conflicting information.
+
+RESPONSE FORMAT REQUIREMENTS:
+- Start your response with '{'
+- End your response with '}'
+- Use proper JSON syntax with quoted keys and values
+- Do not include markdown code blocks or any other formatting
+- If uncertain about a field, provide a reasonable default value rather than omitting the field
+
+FORMAT YOUR RESPONSE AS A VALID JSON OBJECT ONLY WITH NO EXPLANATORY TEXT.

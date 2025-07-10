@@ -1,0 +1,15 @@
+.git*
+.vscode
+local.settings.json
+tests
+__pycache__
+.mypy_cache
+.pytest_cache
+.venv
+env
+.env
+output/
+Dockerfile
+*.md
+__azurite*
+.python_packages

@@ -1,0 +1,154 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Test: Enhanced (Quick)",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_enhanced.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Run quick tests without external dependencies"
+    },
+    {
+      "label": "Test: Functions (Full)",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_functions.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Run full Azure Functions tests (requires config)"
+    },
+    {
+      "label": "Test: Custom Config API",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_custom_config_api.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Test custom configuration API endpoints"
+    },
+    {
+      "label": "Test: Environment Detection",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_environment.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Test environment detection logic"
+    },
+    {
+      "label": "Test: AI Analysis",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_ai_analysis.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Test AI analysis functionality"
+    },
+    {
+      "label": "Test: JQL Debug",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_jql_debug.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Debug JQL query issues"
+    },
+    {
+      "label": "Test: Custom Debug",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "test_custom_debug.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Run custom debugging tests"
+    },
+    {
+      "label": "Test: All Tests",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Test: Enhanced (Quick)",
+        "Test: Functions (Full)"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "detail": "Run all main tests in sequence"
+    },
+    {
+      "label": "Azure Functions: Start",
+      "type": "shell",
+      "command": "func",
+      "args": [
+        "start"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Start Azure Functions locally"
+    }
+  ]
+}

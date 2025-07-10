@@ -1,0 +1,30 @@
+# Core function dependencies
+azure-functions>=1.17.0
+#azure-functions-worker>=1.1.9  # Latest available version
+
+# Dependencies for Azure Functions app
+semantic-kernel>=1.6.0
+
+# Include Flask for backward compatibility during migration
+Flask>=2.3.3
+Werkzeug>=2.3.7
+
+# Common Azure dependencies
+azure-identity>=1.13.0
+openai>=1.0.0  # Official OpenAI package that supports Azure endpoints
+azure-storage-blob>=12.18.0
+azure-cosmos>=4.5.0
+
+# Other dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+aiohttp>=3.8.5
+#setuptools>=68.0.0  # Explicitly include setuptools to avoid build issues
+#wheel>=0.40.0       # Include wheel for package building
+
+# Fix for grpcio compatibility with azure-functions-worker
+#grpcio~=1.33.1  # Version compatible with azure-functions-worker
+
+# Testing dependencies
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
