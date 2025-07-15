@@ -1,0 +1,23 @@
+trigger:
+  branches:
+    include:
+      - main
+      - dev
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- checkout: self
+
+- script: |
+    echo "Simulating build step..."
+    sleep 2
+    echo "Build complete!"
+  displayName: 'Dummy Build Step'
+
+- script: |
+    echo "Simulating release/deploy step..."
+    sleep 2
+    echo "Release simulation complete!"
+  displayName: 'Dummy Release Deployment'
